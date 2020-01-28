@@ -6,6 +6,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public class Application {
     }
 
     @GetMapping(value = "/")
-    public List<String> getWords() {
+    public List<String> getWords(@RequestParam (value = "amount") Integer amount) {
         JavaRDD<String> lines = ctx.textFile("src/main/resources/song", 1);
-        return popularWordsService.topX(lines, 10);
+        return popularWordsService.topX(lines, amount);
     }
 }
